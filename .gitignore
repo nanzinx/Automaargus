@@ -1,0 +1,6 @@
+config.json
+logs/
+*.lock
+robots_snapshot.json
+falhas_transferencia_*.csv
+__pycache__/
