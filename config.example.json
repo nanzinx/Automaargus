@@ -1,0 +1,18 @@
+{
+  "auth_header": "Authorization",
+  "auth_scheme": "Bearer",
+  "timeout": 20,
+  "max_retries": 3,
+  "move_strategy": "native",
+  "endpoints": {
+    "groups_list": ["GET", "/groups"],
+    "contact_move": ["POST", "/contacts/{contact_id}/move"],
+    "robot_pause": ["POST", "/robots/{robot_id}/pause"]
+  },
+  "fields": {
+    "contact_tabulacao": "tabulacao",
+    "robot_status": "status"
+  },
+  "running_states": ["ACTIVE", "RUNNING", "ATIVO"],
+  "paused_states": ["PAUSED", "STOPPED", "PAUSADO"]
+}

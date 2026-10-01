@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Sem contato -> Retentativa",
+    "source_group": "Carteira Nova",
+    "target_group": "Retentativa",
+    "tabulacoes": ["SEM CONTATO", "CAIXA POSTAL"],
+    "max_contacts": 5000
+  },
+  {
+    "name": "Promessa de pagamento -> Acompanhamento",
+    "source_group": "Retentativa",
+    "target_group": "Acompanhamento",
+    "tabulacoes": ["PROMESSA DE PAGAMENTO"]
+  }
+]
