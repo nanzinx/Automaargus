@@ -34,6 +34,8 @@ DEFAULT_ENDPOINTS = {
     "robot_resume":       ("POST",   "/robots/{robot_id}/resume"),
     "active_calls":       ("GET",    "/calls/active"),   # opcional: se não existir, remova a chave
     "group_operators":    ("GET",    "/groups/{group_id}/operators"), # Novo: status dos operadores
+    "group_operators_list":("GET",   "/groups/{group_id}/operators/list"), # Lista detalhada de operadores logados
+    "operator_move":      ("POST",   "/operators/{operator_id}/move"), # Move operador de grupo
 }
 
 # Nomes dos campos no JSON de resposta da API  -> nome usado internamente
@@ -46,6 +48,8 @@ DEFAULT_FIELDS = {
     "robot_id": "id",
     "robot_name": "name",
     "robot_status": "status",
+    "operator_id": "id",
+    "operator_login": "login",
 }
 
 # Nomes de parâmetros de query usados nas listagens

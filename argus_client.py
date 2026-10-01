@@ -57,6 +57,12 @@ class ArgusClient:
         self.cfg = cfg
         self.log = logger
         self.session = requests.Session()
+        # OTIMIZAÇÃO: Aumento do Connection Pool para suportar paralelismo (ThreadPoolExecutor)
+        # sem a necessidade de reabrir handshakes TCP a cada requisição simultânea.
+        adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100)
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
+        
         token = f"{cfg.auth_scheme} {cfg.token}".strip()
         self.session.headers.update({cfg.auth_header: token, "Content-Type": "application/json"})
         self._groups_cache: dict[str, str] | None = None
@@ -185,6 +191,24 @@ class ArgusClient:
             self._request("group_contact_del", {"group_id": source_group_id, "contact_id": contact_id})
         else:
             raise ArgusError(f"move_strategy inválida: {self.cfg.move_strategy}")
+
+    # ------------------------- OPERADORES -------------------------
+    def iter_group_operators(self, group_id: str) -> Iterator[dict]:
+        """Itera sobre a lista detalhada de operadores logados em um grupo."""
+        f = self.cfg.fields
+        # Ajuste dependendo se a API retorna paginado ou tudo de uma vez. Assumindo lista direta:
+        items = self._as_list(self._request("group_operators_list", {"group_id": group_id}))
+        for item in items:
+            yield {
+                "id": str(item.get(f.get("operator_id", "id"))),
+                "login": str(item.get(f.get("operator_login", "login"))),
+                "raw": item,
+            }
+
+    def move_operator(self, operator_id: str, source_group_id: str, target_group_id: str) -> None:
+        """Move o operador de um grupo operacional para outro."""
+        self._request("operator_move", {"operator_id": operator_id},
+                      body={"source_group_id": source_group_id, "target_group_id": target_group_id})
 
     # ------------------------- ROBÔS / CAMPANHAS -------------------------
     def list_robots(self) -> list[dict]:
