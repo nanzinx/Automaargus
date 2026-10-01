@@ -147,6 +147,26 @@ class ArgusClient:
         value = data.get(self.cfg.fields["contact_group"])
         return str(value) if value is not None else None
 
+    def get_group_operators_status(self, group_id: str) -> dict:
+        """
+        Consulta a disponibilidade dos operadores do grupo.
+        Retorna dicionário com contagens, ex: {"available": 0, "busy": 5, "total": 5}
+        """
+        # Exemplo de payload/estrutura esperada da API:
+        # {
+        #    "available_count": 0,
+        #    "busy_count": 5,
+        #    "logged_in": 5
+        # }
+        payload = self._request("group_operators", {"group_id": group_id})
+        
+        # Estrutura de retorno normalizada
+        return {
+            "available": payload.get("available_count", 0),
+            "busy": payload.get("busy_count", 0),
+            "total": payload.get("logged_in", 0)
+        }
+
     def move_contact(self, contact_id: str, source_group_id: str, target_group_id: str) -> None:
         """
         Move o contato de grupo preservando histórico (o contato mantém o mesmo ID;

@@ -33,6 +33,7 @@ DEFAULT_ENDPOINTS = {
     "robot_pause":        ("POST",   "/robots/{robot_id}/pause"),
     "robot_resume":       ("POST",   "/robots/{robot_id}/resume"),
     "active_calls":       ("GET",    "/calls/active"),   # opcional: se não existir, remova a chave
+    "group_operators":    ("GET",    "/groups/{group_id}/operators"), # Novo: status dos operadores
 }
 
 # Nomes dos campos no JSON de resposta da API  -> nome usado internamente
